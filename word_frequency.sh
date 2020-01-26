@@ -12,4 +12,4 @@
 #    the day is sunny the the
 #    the sunny is is
 
-cat words.txt | while read line;do echo $line | awk '{for(i=1;i<=NF;i++) print $i}' | sed 's/ //g';done | sort | uniq -c | awk '{print $2" "$1}'
+cat words.txt | while read line;do echo $line | awk '{for(i=1;i<=NF;i++) print $i}' ;done | sort | uniq -c | awk '{print $2" "$1}'
