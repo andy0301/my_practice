@@ -19,3 +19,6 @@
 
  # finally use awk '{print | "$1 sort -r"}' print out the results sorted by descending frequency number
 cat words.txt | while read line;do echo $line | awk '{for(i=1;i<=NF;i++) print $i}' ;done | sort | uniq -c | awk '{print |"$1 sort -r"}' | awk '{print $2" "$1}'
+
+ # another using sort -r -k<field>
+cat words.txt | while read line;do echo $line | awk '{for(i=1;i<=NF;i++) print $i}' ;done | sort | uniq -c | awk '{print $2" "$1}' | sort -r -k2
