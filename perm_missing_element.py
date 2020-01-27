@@ -27,6 +27,17 @@ each element of array A is an integer within the range [1..(N + 1)].
 """
 
 def solution(A):
+
+    if not A:
+        return(1)
+
+     # gen array B from 1..N+1
+    for b in list(range(1, len(A) + 2)):
+        if b not in A:
+            return(b)
+            break
+
+def solution_smart(A):
     if not A:
         return(1)
     
