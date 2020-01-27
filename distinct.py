@@ -31,9 +31,15 @@ def solution(A):
      # return A_dict.keys() count, this should be the number for distinct values from A
     return(len(A_dict.keys()))
 
+def solution_using_set(A):
+    A_set = set(A)
+    return(len(A_set))
+
 if __name__ == "__main__":
     A = [2,1,1,2,3,1]
     print(solution(A))
+    print(solution_using_set(A))
 
     A = [2,1,1,2,3,1,4,5,6,4,5,6]
     print(solution(A))
+    print(solution_using_set(A))
