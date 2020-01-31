@@ -1,0 +1,5 @@
+aws.env
+aws_token
+.terraform
+*tfstate*
+terraform.tfstate*
