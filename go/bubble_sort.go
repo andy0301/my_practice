@@ -5,6 +5,7 @@ import (
 	"math/rand"
 )
 
+ //bubble sort
 func bubble_sort(A []int) []int {
 	len := len(A)
 	for i := 0; i < len; i++ {
