@@ -1,3 +1,8 @@
+###################
+# Create web server cluster
+# By Andy Cai
+###################
+
 provider "aws" {
   region = "us-west-1"
 }
@@ -29,7 +34,7 @@ data "aws_subnet_ids" "default" {
 
  # using terraform_remote_state data source to get db outputs
 data "terraform_remote_state" "db" {
-  backend = "S3"
+  backend = "s3"
 
   config = {
     bucket = "andy-aws-example1-terraform-state"

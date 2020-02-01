@@ -2,6 +2,10 @@
 # create S3 bucket to store terraform.tfstate
 # by Andy Cai
 ###################
+provider "aws" {
+  region = "us-west-1"
+}
+
 
 resource "aws_s3_bucket" "terraform_state" {
   bucket = "andy-aws-example1-terraform-state"
