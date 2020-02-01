@@ -23,8 +23,8 @@ resource "aws_security_group" "instance" {
   name = "inst-001-instance"
 
   ingress {
-    from_port   = 8080
-    to_port     = 8080
+    from_port   = var.server_port
+    to_port     = var.server_port
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -38,8 +38,9 @@ resource "aws_instance" "andy_instance_001" {
 
   user_data = <<-EOF
                 #!/bin/bash
-                echo "Hello, World" > index.html
-                nohup busybox httpd -f -p 8080 &
+                echo -e "Hello, Taylor!<br>" > index.html
+                echo -e "How are you today?<br>" >> index.html
+                nohup busybox httpd -f -p ${var.server_port} &
                 EOF
 
   tags = {
