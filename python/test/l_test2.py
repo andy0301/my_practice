@@ -66,7 +66,13 @@ import requests
 import json
 
 def mockApiCall(empId):
-    
+    url = "http://www.linkedin.corp/api/employee/" + empId
+
+    try:
+        result = requests.get(url)
+    except requests.ConnectionError as err:
+        return (err)
+
     if result.status_code == 200:
          # return mock results json file
         if empId == "A123456789":
@@ -90,7 +96,17 @@ def mockApiCall(empId):
     else:
         return ("Api call failed with error status {}".format(result.status_code))
 
+def getEmpInfo(empId,indent=0):
+    r = json.loads(mockApiCall(empId))
 
+    for i in range(indent):
+        print(end="  ")
+    
+    print(r['name'] + " - " + r['title'])
+
+    if len(r['reports']) >= 1:
+        for eid in r['reports']:
+            getEmpInfo(eid, indent+1)
 
    
 if __name__ == "__main__":
