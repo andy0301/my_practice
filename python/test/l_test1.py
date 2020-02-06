@@ -24,7 +24,5 @@ def return_numbers(num):
 if __name__ == "__main__":
     for i in range(1,101):
         result = return_numbers(i)
-        if not result:
-            continue
-        else:
+        if result:
             print(result)
