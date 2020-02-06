@@ -41,20 +41,41 @@
 
  # get minute and total_messages
 
- echo -e "minute,total_messages,logrotate,run-parts,anacron,CROND,ntpd,rsyslogd,cs3,ACCT_ADD" >> logs.csv
- cat /var/log/messages | awk -F[:] '{print $1":"$2}' | sort | uniq -c | while read cnt month day minute
+calc_cnt () {
+   month=$1
+   day=$2
+   minute=$3
+   pattern=$4
+
+   cnt=$(cat /tmp/log.txt | awk -v month="$month" -v day="$day" -v minute="$minute" -v pattern="$pattern" \
+     '$1==month && $2==day && $3~minute && $5~pattern {print $1,$2,$3}' | sort | wc -l )
+
+   echo $cnt
+}
+
+ echo  "minute,total_messages,logrotate,run-parts,anacron,CROND,ntpd,rsyslogd,cs3,ACCT_ADD" >> logs.csv
+ cat /tmp/log.txt | awk -F[:] '{print $1":"$2}' | sort | uniq -c | while read cnt month day minute
  do
-    logrotate_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/logrotate/ {print $1,$2,$3}' | sort |wc -l)
-    run_parts_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/run-parts/ {print $1,$2,$3}' | sort |wc -l)
-    anacron_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/anacron/ {print $1,$2,$3}' | sort |wc -l)
-    crond_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/CROND/ {print $1,$2,$3}' | sort |wc -l)
-    ntpd_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/ntpd/ {print $1,$2,$3}' | sort |wc -l)
-    rsyslogd_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/rsyslogd/ {print $1,$2,$3}' | sort |wc -l)
-    cs3_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/cs3/ {print $1,$2,$3}' | sort |wc -l)
-    acct_add_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/ACCT_ADD/ {print $1,$2,$3}' | sort |wc -l)
+    #logrotate_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/logrotate/ {print $1,$2,$3}' | sort |wc -l)
+    #run_parts_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/run-parts/ {print $1,$2,$3}' | sort |wc -l)
+    #anacron_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/anacron/ {print $1,$2,$3}' | sort |wc -l)
+    #crond_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/CROND/ {print $1,$2,$3}' | sort |wc -l)
+    #ntpd_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/ntpd/ {print $1,$2,$3}' | sort |wc -l)
+    #rsyslogd_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/rsyslogd/ {print $1,$2,$3}' | sort |wc -l)
+    #cs3_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/cs3/ {print $1,$2,$3}' | sort |wc -l)
+    #acct_add_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/ACCT_ADD/ {print $1,$2,$3}' | sort |wc -l)
     
+   logrotate_cnt=$(calc_cnt $month $day $minute logrotate)
+   run_parts_cnt=$(calc_cnt $month $day $minute run-parts)
+   anacron_cnt=$(calc_cnt $month $day $minute anacron)
+   crond_cnt=$(calc_cnt $month $day $minute CROND)
+   ntpd_cnt=$(calc_cnt $month $day $minute ntpd)
+   rsyslogd_cnt=$(calc_cnt $month $day $minute rsyslogd)
+   cs3_cnt=$(calc_cnt $month $day $minute cs3)
+   acct_add_cnt=$(calc_cnt $month $day $minute ACCT_ADD)
+
     total_cnt=$(expr $logrotate_cnt + $run_parts_cnt + $anacron_cnt + $crond_cnt + $ntpd_cnt + $rsyslogd_cnt + $cs3_cnt + $acct_add_cnt)
-    echo -e $month" "$day" "$minute","$total_cnt","$logrotate_cnt","$run_parts_cnt","$anacron_cnt","$crond_cnt","$ntpd_cnt","$rsyslogd_cnt","$cs3_cnt","$acct_add_cnt
+    echo  $month" "$day" "$minute","$total_cnt","$logrotate_cnt","$run_parts_cnt","$anacron_cnt","$crond_cnt","$ntpd_cnt","$rsyslogd_cnt","$cs3_cnt","$acct_add_cnt
 
  done >> logs.csv
 
