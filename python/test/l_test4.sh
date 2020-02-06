@@ -41,7 +41,7 @@
 
  # get minute and total_messages
 
- echo -e "minute,total_messages,logrotate,run-parts,anacron,CROND,ntpd,rsyslogd,cs3,ACCT_ADD"
+ echo -e "minute,total_messages,logrotate,run-parts,anacron,CROND,ntpd,rsyslogd,cs3,ACCT_ADD" >> logs.csv
  cat /var/log/messages | awk -F[:] '{print $1":"$2}' | sort | uniq -c | while read cnt month day minute
  do
     logrotate_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/logrotate/ {print $1,$2,$3}' | sort |wc -l)
@@ -56,5 +56,5 @@
     total_cnt=$(expr $logrotate_cnt + $run_parts_cnt + $anacron_cnt + $crond_cnt + $ntpd_cnt + $rsyslogd_cnt + $cs3_cnt + $acct_add_cnt)
     echo -e $month" "$day" "$minute","$total_cnt","$logrotate_cnt","$run_parts_cnt","$anacron_cnt","$crond_cnt","$ntpd_cnt","$rsyslogd_cnt","$cs3_cnt","$acct_add_cnt
 
- done
+ done >> logs.csv
 
