@@ -37,3 +37,5 @@
 
 # my first solution missed the header line. This was pointed out by the
 # proctor and I fixed it
+
+cat /var/log/messages | awk -F[:] '{print $1":"$2}' | sort | uniq -c | awk '{print $2,$3,$4,$1}'

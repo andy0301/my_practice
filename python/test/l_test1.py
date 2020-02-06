@@ -11,20 +11,3 @@
 # The other thing to clarify is whether "between" is inclusive or not
 # I assumed it was inclusive and let the interviewer know that
 
-def return_numbers(num):
-    if (i % 4 == 0) and (i % 6 == 0):
-        return ("LinkedIn")
-    elif (i % 4 == 0):
-        return ("Linked")
-    elif (i % 6 == 0):
-        return ("In")
-    else:
-        return
-
-if __name__ == "__main__":
-    for i in range(1,101):
-        result = return_numbers(i)
-        if not result:
-            continue
-        else:
-            print(result)

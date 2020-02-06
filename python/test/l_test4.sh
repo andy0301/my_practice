@@ -38,3 +38,23 @@
 
 # I accidentally deleted my solution
 # but it looked something like this
+
+ # get minute and total_messages
+
+ echo -e "minute,total_messages,logrotate,run-parts,anacron,CROND,ntpd,rsyslogd,cs3,ACCT_ADD"
+ cat /var/log/messages | awk -F[:] '{print $1":"$2}' | sort | uniq -c | while read cnt month day minute
+ do
+    logrotate_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/logrotate/ {print $1,$2,$3}' | sort |wc -l)
+    run_parts_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/run-parts/ {print $1,$2,$3}' | sort |wc -l)
+    anacron_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/anacron/ {print $1,$2,$3}' | sort |wc -l)
+    crond_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/CROND/ {print $1,$2,$3}' | sort |wc -l)
+    ntpd_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/ntpd/ {print $1,$2,$3}' | sort |wc -l)
+    rsyslogd_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/rsyslogd/ {print $1,$2,$3}' | sort |wc -l)
+    cs3_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/cs3/ {print $1,$2,$3}' | sort |wc -l)
+    acct_add_cnt=$(cat /var/log/messages | awk -v month="$month" -v day="$day" -v minute="$minute" '$1==month && $2==day && $3~minute && $5~/ACCT_ADD/ {print $1,$2,$3}' | sort |wc -l)
+    
+    total_cnt=$(expr $logrotate_cnt + $run_parts_cnt + $anacron_cnt + $crond_cnt + $ntpd_cnt + $rsyslogd_cnt + $cs3_cnt + $acct_add_cnt)
+    echo -e $month" "$day" "$minute","$total_cnt","$logrotate_cnt","$run_parts_cnt","$anacron_cnt","$crond_cnt","$ntpd_cnt","$rsyslogd_cnt","$cs3_cnt","$acct_add_cnt
+
+ done
+
