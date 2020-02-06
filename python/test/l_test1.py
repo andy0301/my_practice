@@ -12,11 +12,11 @@
 # I assumed it was inclusive and let the interviewer know that
 
 def return_numbers(num):
-    if (i % 4 == 0) and (i % 6 == 0):
+    if (num % 4 == 0) and (num % 6 == 0):
         return ("LinkedIn")
-    elif (i % 4 == 0):
+    elif (num % 4 == 0):
         return ("Linked")
-    elif (i % 6 == 0):
+    elif (num % 6 == 0):
         return ("In")
     else:
         return
