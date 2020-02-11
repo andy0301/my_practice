@@ -103,12 +103,16 @@ def countLog (logFile):
     f = open(logFile,"r")
 
     minutes = {}
+    program_names = {}
     cnt = 1
     for line in f:
         m = line.split(' ')
         minute = m[0] + " " + m[1] + " " + m[2][0:5]
-        program = m[4]
+        program = m[4].replace(":","").strip()
         programs = {}
+
+        # get program names to support print
+        program_names[program] = True
 
         if minute in minutes.keys():
             if program in minutes[minute].keys():
@@ -120,7 +124,7 @@ def countLog (logFile):
                 minutes[minute] = programs
     f.close()
 
-    return minutes
+    return minutes, program_names
 
 def genCSV (csvFile, fileData):
     f = open(csvFile, "a")
@@ -129,21 +133,37 @@ def genCSV (csvFile, fileData):
 
 if __name__ == "__main__":
     logFile = "/tmp/log.txt"
-    csvFile = "/tmp/output.csv"
+    csvFile = "./output.csv"
 
     # count minute numbers in /var/log/messages
-    fileData = countLog(logFile)
-    print(fileData)
+    (minutes, program_names) = countLog(logFile)
+    #print(program_names.keys())
+
+    # print title
+    title = "minute,total_messages"
+    for t in program_names.keys():
+        title += "," + t
+    #print(title)
+    title += "\n"
+    genCSV(csvFile,title)
     
     # generate CSV
-    for minute in fileData.keys():
+    for minute in minutes.keys():
+         # get total messages for minute
         total = 0
-        for cnt in fileData[minute].values():
+        for cnt in minutes[minute].values():
             total += cnt
+
         data = minute + "," + str(total)
-        for program in fileData[minute].keys():
-            program_cnt_str = "," + str(fileData[minute][program])
-            data += program_cnt_str
+
+        for program in program_names.keys():
+            if program in minutes[minute].keys():
+                program_cnt = "," + str(minutes[minute][program])
+            else:
+                program_cnt = ",0" 
+        #for program in minutes[minute].keys():
+         #   program_cnt_str = "," + str(minutes[minute][program])
+            data += program_cnt
 
         data += "\n"
         
