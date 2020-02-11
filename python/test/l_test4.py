@@ -137,13 +137,11 @@ if __name__ == "__main__":
 
     # count minute numbers in /var/log/messages
     (minutes, program_names) = countLog(logFile)
-    #print(program_names.keys())
 
     # print title
     title = "minute,total_messages"
     for t in program_names.keys():
         title += "," + t
-    #print(title)
     title += "\n"
     genCSV(csvFile,title)
     
@@ -161,8 +159,7 @@ if __name__ == "__main__":
                 program_cnt = "," + str(minutes[minute][program])
             else:
                 program_cnt = ",0" 
-        #for program in minutes[minute].keys():
-         #   program_cnt_str = "," + str(minutes[minute][program])
+            
             data += program_cnt
 
         data += "\n"
