@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/local/bin/python3
 
 # Below, see a sample of /var/log/messages.
 #
@@ -38,4 +38,41 @@
 # my first solution missed the header line. This was pointed out by the
 # proctor and I fixed it
 
-cat /var/log/messages | awk -F[:] '{print $1":"$2}' | sort | uniq -c | awk '{print $2,$3,$4,$1}'
+# cat /var/log/messages | awk -F[:] '{print $1":"$2}' | sort | uniq -c | awk '{print $2,$3,$4,$1}'
+
+# Andy Cai, due to right now seems less people know bash as well as us during interview, so rewrite using python
+
+def countLog (logFile):
+    f = open(logFile,"r")
+
+    minutes = {}
+    cnt = 1
+    for line in f:
+        m = line.split(' ')
+        minute = m[0] + " " + m[1] + " " + m[2][0:5]
+        if minute in minutes.keys():
+            minutes[minute] = minutes[minute] + 1
+        else:
+            minutes[minute] = cnt
+
+    f.close()
+
+    return minutes
+
+def genCSV (csvFile, fileData):
+    f = open(csvFile, "a")
+    f.write(fileData)
+    f.close()
+
+if __name__ == "__main__":
+    logFile = "/tmp/log.txt"
+    csvFile = "/tmp/output.csv"
+
+    # count minute numbers in /var/log/messages
+    fileData = countLog(logFile)
+    
+    # generate CSV
+    for key in fileData.keys():
+        data = key + "," + str(fileData[key]) + "\n"
+        genCSV(csvFile, data)
+
