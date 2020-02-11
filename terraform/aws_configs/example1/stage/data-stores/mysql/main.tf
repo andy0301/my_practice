@@ -4,16 +4,17 @@
 ###################
 
 provider "aws" {
-    region = "us-west-1"
+    region = var.region
 }
 
-resource "aws_db_instance" "mysql_example" {
-  identifier_prefix = "andy-aws-example1"
-  engine = "mysql"
-  allocated_storage = 10
-  instance_class = "db.t2.micro"
-  name = "andy_example1_db"
-  username = "admin"
+module "aws_example_terraform_module" {
+  source = "github.com/andy0301/aws_example_terraform_modules.git//data-store/db?ref=v1.3"
 
-  password = var.db_password
+  db_cluster_name = "andy-aws-example"
+  db_engine = "mysql"
+  db_storage_size = 10
+  db_instance_type = "db.t2.micro"
+  db_name = "andy_example1_db"
+  db_admin_username = "admin"
+  db_password = var.db_password
 }
