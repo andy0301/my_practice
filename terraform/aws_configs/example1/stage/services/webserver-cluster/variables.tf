@@ -4,8 +4,7 @@ variable "server_port" {
   default     = 8080
 }
 
-variable "alb_port" {
-  description = "The port the Application Loadbalancer for HTTP requests"
-  type        = number
-  default     = 80
+variable "region" {
+  description = "Region which the cluster will be built"
+  type = string
 }
