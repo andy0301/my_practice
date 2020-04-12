@@ -1,4 +1,4 @@
-How can you accelerate a globally distributed and heavily used ecommerce application? (Select ALL that apply)
+**How can you accelerate a globally distributed and heavily used ecommerce application? (Select ALL that apply)**
 - [ ] Centralize logging and monitoring
 - [ ] Implement a disaster recovery site
 - [ ] Distribute the database globally
