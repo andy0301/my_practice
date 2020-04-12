@@ -195,4 +195,4 @@
 **REST and SOAP key feature and difference?**
 
 **HTTP Method: GET,PUT,POST,UPDATE,DELETE**
-- [] which one have no response body?
+- [ ] which one have no response body?
