@@ -189,3 +189,8 @@
 - [ ] A deployment pattern for rolling out releases to a subset of systems
 - [ ] A deployment method that takes resources out of stack, deploys the new changes, and brings it back
 - [ ] A method of comparing two versions of an application against each other to determine which performs better
+
+**REST and SOAP key feature and difference?**
+
+**HTTP Method: GET,PUT,POST,UPDATE,DELETE**
+- [] which one have no response body?
