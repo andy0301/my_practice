@@ -190,6 +190,8 @@
 - [ ] A deployment method that takes resources out of stack, deploys the new changes, and brings it back
 - [ ] A method of comparing two versions of an application against each other to determine which performs better
 
+**What are key characteristics of the User Datagram Protocol(UDP)**
+
 **REST and SOAP key feature and difference?**
 
 **HTTP Method: GET,PUT,POST,UPDATE,DELETE**
