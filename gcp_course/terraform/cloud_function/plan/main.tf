@@ -18,5 +18,9 @@ module "my_cloudfunction" {
   project_id            = local.project
   region                = local.region
   source_archive_bucket = "andy-00000002-bucket"
-  source_archive_object = "load_gcs_to_bq.zip"
+  source_archive_object = "load-gcs-to-bq.zip"
+  available_memory_mb   = "512"
+  dataset_id            = "andy_test_dataset"
+  table_name            = "log1"
+  file_name_prefix      = "api/api-"
 }

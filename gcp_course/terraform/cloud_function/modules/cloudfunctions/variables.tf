@@ -21,3 +21,19 @@ variable "source_archive_bucket" {
 variable "source_archive_object" {
   type = string
 }
+
+variable "dataset_id" {
+    type = string
+}
+
+variable "table_name" {
+    type = string
+}
+
+variable "file_name_prefix" {
+    type = string
+}
+
+variable "available_memory_mb" {
+    type = string
+}

@@ -4,7 +4,7 @@ resource "google_cloudfunctions_function" "cloudfunctions_function" {
   project             = var.project_id
   region              = var.region
   runtime             = "python37"
-  available_memory_mb = "128"
+  available_memory_mb = var.available_memory_mb
 
 
   source_archive_bucket = var.source_archive_bucket
@@ -15,6 +15,13 @@ resource "google_cloudfunctions_function" "cloudfunctions_function" {
   event_trigger {
     event_type = "google.storage.object.finalize"
     resource   = var.bucket_name
+  }
+
+  environment_variables = {
+    DATASET_ID = var.dataset_id
+    TABLE_NAME = var.table_name
+    FILE_NAME_PREFIX = var.file_name_prefix
+
   }
 
   depends_on = [
@@ -39,12 +46,6 @@ resource "google_project_iam_member" "bq_data_owner" {
   member  = "serviceAccount:${google_service_account.service_account.email}"
   project = var.project_id
   role    = "roles/bigquery.dataOwner"
-}
-
-resource "google_project_iam_member" "bq_admin" {
-  member  = "serviceAccount:${google_service_account.service_account.email}"
-  project = var.project_id
-  role    = "roles/bigquery.admin"
 }
 
 resource "google_project_iam_member" "bq_user" {
